@@ -25,14 +25,14 @@ jobs:
         id: prepare
         run: |
           DOCKER_IMAGE=seanbrandt/vault-k8s
-          DOCKER_PLATFORMS=linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386
+          DOCKER_PLATFORMS=linux/amd64,linux/arm64,linux/386
           VERSION=latest
 
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
           fi
 
-          if [[ $GITHUB_REF == refs/feature/* ]]; then
+          if [[ $GITHUB_REF == refs/heads/feature/* ]]; then
             VERSION="$(date -u +'%Y%m%dT%H%M%SZ')+${GITHUB_SHA::12}"
           fi
 
@@ -60,7 +60,7 @@ jobs:
         id: build_binaries
         run: |
           env
-          gox -osarch="linux/amd64 linux/386 linux/arm linux/arm64" -output=".build/{{.Dir}}_{{.OS}}_{{.Arch}}_${VERSION}" -verbose .
+          gox -osarch="linux/amd64 linux/386 linux/arm64" -output=".build/{{.Dir}}_{{.OS}}_{{.Arch}}_${VERSION}" -verbose .
           ls -latr .build
         env:
           VERSION: ${{steps.prepare.outputs.version}}
