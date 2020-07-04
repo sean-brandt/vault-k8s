@@ -59,8 +59,10 @@ jobs:
         id: build_binaries
         run: |
           env
-          gox -osarch="linux/amd64 linux/386 linux/arm linux/arm64" -output=".build/{{.Dir}}_{{.OS}}_{{.Arch}}_${{steps.prepare.output.version}}" -verbose .
+          gox -osarch="linux/amd64 linux/386 linux/arm linux/arm64" -output=".build/{{.Dir}}_{{.OS}}_{{.Arch}}_${VERSION}" -verbose .
           ls -latr .build
+        env:
+          VERSION: ${{steps.prepare.output.version}}
 
       - name: Test
         id: test
