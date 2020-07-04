@@ -32,6 +32,10 @@ jobs:
             VERSION=${GITHUB_REF#refs/tags/v}
           fi
 
+          if [[ $GITHUB_REF == refs/feature/* ]]; then
+            VERSION="$(date -u +'%Y%m%dT%H%M%SZ')+${GITHUB_SHA::12}""
+          fi
+
           TAGS="--tag ${DOCKER_IMAGE}:${VERSION}"
           if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
             TAGS="$TAGS --tag ${DOCKER_IMAGE}:latest"
