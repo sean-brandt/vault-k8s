@@ -7,7 +7,7 @@ ARG VCS_REF
 ARG VERSION=0.3.0
 
 COPY .build/vault-k8s* /
-RUN mv /vault-k8s_linux_${TARGETPLATFORM##linux/}*Z /vault-k8s
+RUN mv /vault-k8s_linux_${TARGETPLATFORM##linux/}* /vault-k8s
 
 FROM alpine:latest
 
