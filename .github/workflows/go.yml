@@ -55,11 +55,13 @@ jobs:
         run: |
           go get -v -t -d ./...
 
-      - name: Build
+      - name: Build Binaries
+        id: build_binaries
         run: |
           env
           gox -osarch="linux/amd64 linux/386 linux/arm linux/arm64" -output=".build/{{.Dir}}_{{.OS}}_{{.Arch}}_${{steps.prepare.output.version}}" -verbose .
           ls -latr .build
 
       - name: Test
+        id: test
         run: go test -v .
