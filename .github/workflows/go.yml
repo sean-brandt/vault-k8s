@@ -59,12 +59,14 @@ jobs:
       - name: Build Binaries
         id: build_binaries
         run: |
-          env
-          gox -osarch="linux/amd64 linux/386 linux/arm64" -output=".build/{{.Dir}}_{{.OS}}_{{.Arch}}_${VERSION}" -verbose .
+          gox -osarch="linux/amd64 linux/386 linux/arm64" -output=".build/{{.Dir}}_{{.OS}}_{{.Arch}}_${{steps.prepare.outputs.version}}" -verbose .
           ls -latr .build
-        env:
-          VERSION: ${{steps.prepare.outputs.version}}
 
       - name: Test
         id: test
         run: go test -v .
+
+      - name: Build Images
+        id: build_images
+        run: |
+          docker buildx build --output "type=image,push=false" ${{steps.prepare.outputs.buildx_args}} -f build/docker/Dev.dockerfile .
