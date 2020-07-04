@@ -59,7 +59,7 @@ jobs:
           gox -osarch="linux/amd64 linux/386 linux/arm linux/arm64" -output=".build/{{.Dir}}_{{.OS}}_{{.Arch}}_${VERSION}" -verbose .
           ls -latr .build
         env:
-          VERSION: ${{steps.prepare.output.version}}
+          VERSION: ${{steps.prepare.outputs.version}}
 
       - name: Test
         id: test
